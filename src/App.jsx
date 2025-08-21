@@ -2,23 +2,40 @@ import React from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import Feed from './pages/Feed'
+import CreatePost from './pages/CreatePost'
 import { useAuth } from './context/AuthContext'
 import { aiRecommendations, ecoTrends } from './utils/recommendations'
 
 export default function App(){
   return (
     <div className="min-h-screen">
-      <header className="py-6">
+      <header className="py-6 border-b bg-white">
         <div className="container-lg flex items-center justify-between">
           <Link to="/" className="text-2xl font-bold text-[var(--color-primary)]">GreenMind</Link>
-          <nav className="space-x-6 hidden md:block">
-            <Link to="/" className="text-muted">Home</Link>
-            <Link to="/feed" className="text-muted">Feed</Link>
-            <Link to="/dashboard" className="text-muted">Dashboard</Link>
-          </nav>
-          <div className="flex items-center gap-3">
-            <input placeholder="Search trends, posts..." className="px-3 py-2 rounded-lg border text-sm hidden lg:inline-block" />
-            <Link to="/dashboard" className="px-3 py-2 rounded-lg bg-white border text-sm text-muted">Profile</Link>
+          
+          <div className="flex items-center gap-4">
+            <nav className="flex items-center gap-6">
+              <Link to="/" className="text-muted hover:text-slate-900">Home</Link>
+              <Link to="/feed" className="text-muted hover:text-slate-900">Feed</Link>
+              <Link to="/dashboard" className="text-muted hover:text-slate-900">Dashboard</Link>
+              <Link 
+                to="/create-post"
+                className="text-[var(--color-primary)] hover:text-slate-900 font-medium"
+              >
+                + Post
+              </Link>
+            </nav>
+
+            <div className="relative">
+              <input 
+                type="search"
+                placeholder="Search..."
+                className="w-64 px-4 py-2 pr-8 rounded-lg border text-sm focus:outline-none focus:border-[var(--color-primary)]"
+              />
+              <svg className="w-4 h-4 text-gray-400 absolute right-3 top-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
           </div>
         </div>
       </header>
@@ -28,6 +45,7 @@ export default function App(){
           <Route path="/" element={<Home/>} />
           <Route path="/feed" element={<Feed/>} />
           <Route path="/dashboard" element={<Dashboard/>} />
+          <Route path="/create-post" element={<CreatePost/>} />
         </Routes>
       </main>
 
@@ -46,10 +64,6 @@ function Home(){
       <div className="card">
         <h1 className="text-3xl font-bold text-primary">Welcome back, {user.name.split(' ')[0]}</h1>
         <p className="mt-3 text-muted">Personalized AI recommendations and current eco trends.</p>
-        <div className="mt-6">
-          <Link to="/feed" className="btn-primary mr-3">Go to Feed</Link>
-          <Link to="/dashboard" className="btn-primary/80">Open Dashboard</Link>
-        </div>
       </div>
 
       <section className="card">
