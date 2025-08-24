@@ -4,8 +4,8 @@ export const demoUser = {
   email: 'ava@greenmind.local',
   avatarUrl: 'https://images.unsplash.com/photo-1544006659-f0b21884ce1d?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=7b8b5d6a2a6e9f1f6b7e7a1b2c3d4e5f',
   bio: 'Lover of urban gardens. I reduce waste and share tips daily.',
-  streak: 18,
-  impactPoints: 342,
+  streak: 27,
+  impactPoints: 1280,
   badges: [
     {
       title: "Tree Planter",
@@ -53,6 +53,30 @@ export const demoUser = {
       title: "Recycling Master",
       desc: "3 months of perfect recycling",
       icon: "https://images.unsplash.com/photo-1604187351574-c75ca79f5807?w=400&auto=format&fit=crop&q=60",
+      level: "Silver"
+    },
+    {
+      title: "Compost Champion",
+      desc: "Turned 50kg of scraps into soil",
+      icon: "https://images.unsplash.com/photo-1599696848657-74bfb6f0b6a9?w=400&auto=format&fit=crop&q=60",
+      level: "Bronze"
+    },
+    {
+      title: "Cycling Streak",
+      desc: "Biked to work for 14 days straight",
+      icon: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=400&auto=format&fit=crop&q=60",
+      level: "Silver"
+    },
+    {
+      title: "Community Leader",
+      desc: "Organized 5 local clean-ups",
+      icon: "https://images.unsplash.com/photo-1519682577862-22b62b24e493?w=400&auto=format&fit=crop&q=60",
+      level: "Gold"
+    },
+    {
+      title: "Water Saver",
+      desc: "Installed low-flow fixtures at home",
+      icon: "https://images.unsplash.com/photo-1483721310020-03333e577078?w=400&auto=format&fit=crop&q=60",
       level: "Silver"
     }
   ]

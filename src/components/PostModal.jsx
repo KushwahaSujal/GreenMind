@@ -26,10 +26,10 @@ export default function PostModal({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl max-w-2xl w-full mx-4 p-6">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-2xl w-full mx-4 p-6 border border-gray-100 dark:border-slate-800">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Create Post</h2>
-          <button onClick={onClose} className="text-slate-500 hover:text-slate-700">
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -38,7 +38,7 @@ export default function PostModal({ isOpen, onClose }) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* File upload area */}
-          <div className="border-2 border-dashed rounded-xl p-8 text-center">
+          <div className="border-2 border-dashed rounded-xl p-8 text-center border-gray-200 dark:border-slate-700">
             <input
               type="file"
               accept="image/*,video/*"
@@ -53,7 +53,7 @@ export default function PostModal({ isOpen, onClose }) {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                     d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <div className="text-sm text-slate-500">
+                <div className="text-sm text-slate-500 dark:text-slate-400">
                   Click to upload photos or videos
                 </div>
               </div>
@@ -100,21 +100,21 @@ export default function PostModal({ isOpen, onClose }) {
           )}
 
           {/* Caption input */}
-          <div>
+      <div>
             <textarea
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
               placeholder="Write a caption..."
-              className="w-full rounded-xl border-gray-200 p-4 h-32 resize-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+        className="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 p-4 h-32 resize-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
 
           {/* Action buttons */}
-          <div className="flex justify-end gap-3">
+      <div className="flex justify-end gap-3">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-lg"
+        className="px-4 py-2 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg"
             >
               Cancel
             </button>

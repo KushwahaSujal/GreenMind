@@ -1,9 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function Dashboard(){
-  const { user, history } = useAuth()
+  const { user, history, updateProfile, signOut } = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
   const [activeFilter, setActiveFilter] = useState('all')
+  const [openEdit, setOpenEdit] = useState(false)
+  const [name, setName] = useState(user.name)
+  const [bio, setBio] = useState(user.bio)
+  const [avatarPreview, setAvatarPreview] = useState(user.avatarUrl)
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    if (params.get('edit') === '1') {
+      setOpenEdit(true)
+    }
+  }, [location.search])
 
   // Calculate stats
   const totalImpact = history.reduce((sum, h) => sum + h.impact, 0)
@@ -30,11 +44,11 @@ export default function Dashboard(){
               alt="avatar" 
               className="w-28 h-28 rounded-full border-4 border-white/30 object-cover shadow-lg" 
             />
-            <div className="absolute -bottom-2 right-0 bg-white rounded-full p-2 shadow-lg">
+            <button onClick={() => setOpenEdit(true)} className="absolute -bottom-2 right-0 bg-white rounded-full p-2 shadow-lg hover:bg-slate-50" aria-label="Edit profile">
               <svg className="w-5 h-5 text-[var(--color-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
               </svg>
-            </div>
+            </button>
           </div>
           <div className="text-center md:text-left">
             <h1 className="text-3xl font-bold">{user.name}</h1>
@@ -69,11 +83,11 @@ export default function Dashboard(){
       </div>
 
       {/* Badges Section */}
-      <section className="card">
+  <section className="card">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-xl font-semibold">Achievement Badges</h2>
-            <p className="text-sm text-muted mt-1">Milestones in your eco-journey</p>
+    <h2 className="text-xl font-semibold">Achievement Badges</h2>
+    <p className="text-sm text-muted mt-1">Milestones in your eco-journey</p>
           </div>
           <button className="text-sm text-[var(--color-primary)] hover:underline">View All</button>
         </div>
@@ -108,6 +122,59 @@ export default function Dashboard(){
           ))}
         </div>
       </section>
+
+      {/* Edit Profile Modal */}
+      {openEdit && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+          <div className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-slate-800">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Edit Profile</h3>
+              <button onClick={()=>setOpenEdit(false)} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Close">
+                <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg>
+              </button>
+            </div>
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-20 h-20 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 border dark:border-slate-700">
+                {avatarPreview ? (
+                  <img src={avatarPreview} alt="avatar preview" className="w-full h-full object-cover" />
+                ) : null}
+              </div>
+              <label className="px-3 py-2 rounded-lg border dark:border-slate-700 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800">
+                <input type="file" accept="image/*" className="hidden" onChange={(e)=>{
+                  const file = e.target.files?.[0]
+                  if(!file) return
+                  const reader = new FileReader()
+                  reader.onload = ()=> setAvatarPreview(reader.result)
+                  reader.readAsDataURL(file)
+                }} />
+                Change picture
+              </label>
+            </div>
+            <div className="space-y-3">
+              <div>
+                <label className="text-sm text-slate-700">Name</label>
+                <input value={name} onChange={e=>setName(e.target.value)} className="mt-1 w-full border dark:border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"/>
+              </div>
+              <div>
+                <label className="text-sm text-slate-700">Bio</label>
+                <textarea value={bio} onChange={e=>setBio(e.target.value)} rows={3} className="mt-1 w-full border dark:border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"/>
+              </div>
+            </div>
+            <div className="mt-6 flex items-center justify-between gap-3">
+              <button
+                onClick={()=>{ signOut(); setOpenEdit(false); navigate('/signin'); }}
+                className="px-4 py-2 rounded-lg border border-red-200 dark:border-red-800 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+              >
+                Sign out
+              </button>
+              <div className="flex gap-3">
+                <button onClick={()=>setOpenEdit(false)} className="px-4 py-2 rounded-lg border dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">Cancel</button>
+                <button onClick={()=>{ updateProfile({ name, bio, avatarUrl: avatarPreview }); setOpenEdit(false) }} className="px-4 py-2 rounded-lg bg-[var(--color-primary)] text-white">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <section className="space-y-6">
         {/* Activity Stats */}
@@ -151,7 +218,7 @@ export default function Dashboard(){
               )
             },
           ].map((stat, i) => (
-            <div key={i} className="card bg-white hover:shadow-lg transition-all duration-300 hover:scale-105">
+    <div key={i} className="card bg-white dark:bg-slate-900 hover:shadow-lg transition-all duration-300 hover:scale-105">
               <div className="flex items-center gap-5 p-6">
                 <div className="p-4 rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary)]/80 flex items-center justify-center w-16 h-16">
                   <div className="text-white">
@@ -159,8 +226,8 @@ export default function Dashboard(){
                   </div>
                 </div>
                 <div className="flex-1">
-                  <div className="text-sm font-medium text-slate-500">{stat.label}</div>
-                  <div className="text-3xl font-bold text-slate-900 mt-1 tabular-nums">{stat.value}</div>
+      <div className="text-sm font-medium text-slate-500 dark:text-slate-400">{stat.label}</div>
+      <div className="text-3xl font-bold text-slate-900 dark:text-slate-100 mt-1 tabular-nums">{stat.value}</div>
                 </div>
               </div>
             </div>
@@ -168,7 +235,7 @@ export default function Dashboard(){
         </div>
 
         {/* Activity Feed */}
-        <div className="card">
+  <div className="card">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div>
               <h2 className="text-xl font-semibold">Activity Feed</h2>
@@ -180,7 +247,7 @@ export default function Dashboard(){
                 className={`px-4 py-2 text-sm rounded-full transition-colors ${
                   activeFilter === 'all' 
                     ? 'bg-[var(--color-primary)] text-white' 
-                    : 'text-slate-600 hover:bg-slate-100'
+        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
               >
                 All
@@ -190,7 +257,7 @@ export default function Dashboard(){
                 className={`px-4 py-2 text-sm rounded-full transition-colors ${
                   activeFilter === 'posts' 
                     ? 'bg-[var(--color-primary)] text-white' 
-                    : 'text-slate-600 hover:bg-slate-100'
+        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
               >
                 Recent Posts
@@ -215,7 +282,7 @@ export default function Dashboard(){
                 return (
                   <div 
                     key={idx} 
-                    className={`group relative bg-white border rounded-xl overflow-hidden hover:border-[var(--color-primary)] hover:shadow-lg transition-all duration-300 ${heightClass}`}
+                    className={`group relative bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl overflow-hidden hover:border-[var(--color-primary)] hover:shadow-lg transition-all duration-300 ${heightClass}`}
                   >
                     <div className="absolute top-3 right-3 z-10 flex gap-2">
                       {h.type === 'post' && (
@@ -232,7 +299,7 @@ export default function Dashboard(){
 
                     {h.image ? (
                       <>
-                        <div className={`relative ${isImagePost ? 'h-[300px]' : 'h-48'} overflow-hidden bg-slate-100`}>
+                        <div className={`relative ${isImagePost ? 'h-[300px]' : 'h-48'} overflow-hidden bg-slate-100 dark:bg-slate-800`}>
                           <img 
                             src={h.image} 
                             alt={h.title}
@@ -269,13 +336,13 @@ export default function Dashboard(){
                         )}
                       </>
                     ) : (
-                      <div className="p-4">
+            <div className="p-4">
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1">
-                            <h3 className="font-medium text-slate-900 group-hover:text-[var(--color-primary)] transition-colors line-clamp-1">
+              <h3 className="font-medium text-slate-900 dark:text-slate-100 group-hover:text-[var(--color-primary)] transition-colors line-clamp-1">
                               {h.title}
                             </h3>
-                            <div className="mt-1 flex items-center gap-2 text-xs text-muted">
+              <div className="mt-1 flex items-center gap-2 text-xs text-muted">
                               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                               </svg>
@@ -287,7 +354,7 @@ export default function Dashboard(){
                             </div>
                           </div>
                         </div>
-                        <p className="mt-2 text-sm text-slate-600 line-clamp-3">{h.description}</p>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300 line-clamp-3">{h.description}</p>
                         {h.type === 'action' && (
                           <div className="mt-3 flex items-center gap-2 text-xs font-medium text-[var(--color-primary)]">
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -3,7 +3,8 @@
  * Provides a sustainable/eco-themed color palette and common extensions.
  * Use classes like `bg-primary`, `text-accent`, `bg-cream`, etc.
  */
-module.exports = {
+export default {
+  darkMode: 'class',
   content: [
     './index.html',
     './src/**/*.{js,jsx,ts,tsx,vue}',
