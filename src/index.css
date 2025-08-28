@@ -1,4 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 3s ease-in-out infinite;
+}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,26 +14,42 @@
 
 @layer base {
   :root{
-    --color-bg: #f6faf4; /* cream */
-    --color-primary: #0f9d58; /* deep green */
-    --color-accent: #16a34a;
-    --muted: #6b7280;
+  --color-bg: #e8f5e9; /* very pale green */
+  --color-primary: #4CAF50; /* fresh green */
+  --color-accent: #F5F5DC; /* beige */
+  --muted: #6b7280;
+  cursor: url('/custom-cursor.svg'), pointer;
+/* Animated custom cursor */
+body, html {
+  cursor: url('/custom-cursor.svg'), pointer;
+}
+
+@media (hover: hover) {
+  body {
+    cursor: url('/custom-cursor.svg'), pointer;
+    transition: background 0.3s;
+  }
+}
+
+/* Example custom cursor SVG (add this file to public/ or src/assets/):
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="#a3e635" stroke="#facc15" stroke-width="4"/></svg>
+*/
   }
 
   body{
-    background-color: var(--color-bg);
-    color: #0f172a;
-    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  }
+      background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+      color: #222;
+      font-family: 'Poppins', 'Montserrat', 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
 
   .text-muted{ color: var(--muted); }
 
   /* Dark theme variables and base colors */
   .dark{
-    --color-bg: #0b1220; /* deep slate/navy */
-    --color-primary: #22c55e; /* slightly brighter green in dark */
-    --color-accent: #14b8a6; /* teal accent */
-    --muted: #9ca3af;
+  --color-bg: #1a2e05; /* deep green-black */
+  --color-primary: #bef264; /* neon lime */
+  --color-accent: #fde047; /* neon yellow */
+  --muted: #9ca3af;
   }
   .dark body{
     background-color: var(--color-bg);
@@ -38,24 +62,65 @@
   .shadow-soft{ box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06); }
 
   .btn-primary{
-    @apply text-white px-4 py-2 rounded-xl shadow-soft hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-offset-2;
-    background-color: var(--color-primary);
-    box-shadow: 0 6px 18px rgba(15, 157, 88, 0.12);
+    color: #fff;
+    background: linear-gradient(90deg, #4CAF50 60%, #81C784 100%);
+    border-radius: 0.75rem;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    box-shadow: 0 6px 18px rgba(76, 175, 80, 0.12);
+    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover {
+    background: linear-gradient(90deg, #388E3C 60%, #a5d6a7 100%);
+    box-shadow: 0 8px 24px rgba(76, 175, 80, 0.18);
+    transform: translateY(-2px) scale(1.04);
+  }
+  /* Eco icon style suggestion */
+  .eco-icon {
+    width: 2.2rem;
+    height: 2.2rem;
+    color: #4CAF50;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+  }
+  /* Hero section image */
+  .hero-bg {
+    background: url('/hero-greenery.jpg') center/cover no-repeat;
+    min-height: 340px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(76,175,80,0.18);
+    z-index: 1;
   }
 
   .card{
     @apply bg-white rounded-2xl p-6;
-    border: 1px solid rgba(15, 23, 42, 0.04);
+    background: linear-gradient(135deg, #faffed 60%, #fef9c3 100%);
+    border: 1px solid #e3eecb;
   }
 
   /* Card dark variant (used across the app) */
   .dark .card{
-    background-color: rgba(2, 6, 23, 0.9); /* slate-950/90 */
-    border-color: rgba(148, 163, 184, 0.12); /* slate-400/12 */
-    color: #e5e7eb; /* slate-200 */
+    background: linear-gradient(135deg, #1a2e05 60%, #365314 100%);
+    border-color: #bef264;
+    color: #fef9c3;
   }
 
   .container-lg{ max-width: 900px; margin-left: auto; margin-right: auto; }
+
+  /* Animated cursor hover effect for links/buttons */
+  a:hover, button:hover, .btn-primary:hover {
+    filter: brightness(1.15) saturate(1.2);
+    transition: filter 0.2s;
+  }
 
   .chip{ @apply text-xs px-3 py-1 rounded-full bg-gray-100 text-slate-700 }
 

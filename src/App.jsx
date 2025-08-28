@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import { fadeInOnScroll, parallaxHero, floatingParticles } from './effects';
 import { Routes, Route, Link, Navigate } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import Feed from './pages/Feed'
 import CreatePost from './pages/CreatePost'
 import { useAuth } from './context/AuthContext'
 import { aiRecommendations, ecoTrends } from './utils/recommendations'
+import ecoDrop from './assets/eco-drop.svg';
+import ecoSolar from './assets/eco-solar.svg';
+import ecoTools from './assets/eco-tools.svg';
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 
@@ -22,10 +26,16 @@ export default function App(){
     const root = document.documentElement
     if (isDark) root.classList.add('dark')
     else root.classList.remove('dark')
+    // Effects
+    fadeInOnScroll();
+    parallaxHero();
+    floatingParticles();
   }, [isDark])
 
   const toggleTheme = () => setIsDark(v => !v)
-  const headerTheme = isDark ? 'bg-gray-900/95 border-gray-800' : 'bg-white/95 border-gray-200/50'
+  const headerTheme = isDark
+    ? 'bg-gradient-to-r from-[#1a2e05] to-[#365314] border-b-2 border-b-[#bef264]'
+    : 'bg-gradient-to-r from-[#faffed] to-[#fef9c3] border-b-2 border-b-[#a3e635]'
   const searchInputClass = isDark
     ? 'w-48 pl-10 pr-4 py-2 rounded-full border border-gray-700 bg-gray-800/50 text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)] focus:bg-gray-900 placeholder:text-gray-400'
     : 'w-48 pl-10 pr-4 py-2 rounded-full border border-gray-200 bg-gray-50/50 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)] focus:bg-white transition-all duration-300 placeholder:text-gray-400'
@@ -116,7 +126,6 @@ export default function App(){
               </Link>
 
               {/* Auth Actions */}
-              <AuthActions isDark={isDark} />
 
               {/* Mobile Menu Button */}
               <MobileMenuButton isDark={isDark} />
@@ -145,206 +154,93 @@ export default function App(){
   )
 }
 
-function Home(){
-  const { user } = useAuth()
-
+function Home() {
+  const { user } = useAuth();
   return (
-  <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 -mx-4 -my-8">
+  <div className="min-h-screen bg-gradient-to-br from-[#faffed] via-[#fef9c3] to-[#a3e635] dark:from-[#1a2e05] dark:via-[#365314] dark:to-[#bef264] -mx-4 -my-8 fade-in-on-scroll">
       {/* Hero Section */}
-  <div className="relative overflow-hidden bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative container-lg mx-auto px-4 py-20">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6 animate-fade-in">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium">Welcome back!</span>
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in-up">
-              Hello, {user.name.split(' ')[0]} 👋
-            </h1>
-            <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-8 animate-fade-in-up" style={{animationDelay: '200ms'}}>
-              Your personalized dashboard for sustainable living, AI-powered recommendations, and the latest eco trends to help you make a positive impact.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up" style={{animationDelay: '400ms'}}>
-              <Link
-                to="/dashboard"
-                className="bg-white text-[var(--color-primary)] px-8 py-3 rounded-full font-semibold hover:bg-white/90 transform hover:scale-105 transition-all duration-300 shadow-lg"
-              >
-                View Dashboard
-              </Link>
-              <Link
-                to="/feed"
-                className="bg-white/20 backdrop-blur-sm text-white border border-white/30 px-8 py-3 rounded-full font-semibold hover:bg-white/30 transform hover:scale-105 transition-all duration-300"
-              >
-                Explore Feed
-              </Link>
-            </div>
+      <div className="hero-bg fade-in-on-scroll">
+        <div className="relative z-10 w-full flex flex-col items-center justify-center py-20">
+          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 mb-6 animate-fade-in">
+            <svg className="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2C7 7 2 12 12 22C22 12 17 7 12 2Z" stroke="#4CAF50" strokeWidth="2" fill="#e8f5e9"/></svg>
+            <span className="text-sm font-medium text-green-700">Welcome back!</span>
+          </div>
+          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-green-800 font-sans">
+            Hello, {user?.name?.split(' ')[0] || 'User'} 👋
+          </h1>
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8 font-sans">
+            Your personalized dashboard for sustainable living, AI-powered recommendations, and the latest eco trends to help you make a positive impact.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up">
+            <Link
+              to="/dashboard"
+              className="btn-primary"
+            >
+              <svg className="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" stroke="#4CAF50" strokeWidth="2" fill="#e8f5e9"/><path d="M8 12l2 2 4-4" stroke="#388E3C" strokeWidth="2"/></svg>
+              View Dashboard
+            </Link>
+            <Link
+              to="/feed"
+              className="btn-primary"
+              style={{ background: 'linear-gradient(90deg, #8D6E63 60%, #F5F5DC 100%)', color: '#222' }}
+            >
+              <svg className="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="7" width="18" height="13" rx="2" fill="#F5F5DC" stroke="#8D6E63" strokeWidth="2"/><path d="M8 10h8M8 14h5" stroke="#8D6E63" strokeWidth="2"/></svg>
+              Explore Feed
+            </Link>
           </div>
         </div>
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-72 h-72 bg-white/5 rounded-full -translate-y-36 translate-x-36"></div>
-        <div className="absolute bottom-0 left-0 w-56 h-56 bg-white/5 rounded-full translate-y-28 -translate-x-28"></div>
       </div>
-
       <div className="container-lg mx-auto px-4 py-12">
-        {/* AI Recommendations Section */}
-        <section className="mb-12">
+        {/* Trending in Sustainability Section */}
+  <section className="mb-12 fade-in-on-scroll">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-4">🤖 AI Recommendations</h2>
-            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Personalized suggestions powered by artificial intelligence to boost your sustainable lifestyle
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {aiRecommendations.map((r, index) => (
-              <div 
-                key={r.id}
-                className="group bg-white/80 dark:bg-slate-900/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/30 dark:border-slate-700 hover:shadow-xl transform hover:scale-105 transition-all duration-300 animate-fade-in-up"
-                style={{animationDelay: `${index * 150}ms`}}
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg">
-                    🎯
-                  </div>
-                  <div className="flex flex-wrap gap-1">
-                    {r.tags.map(tag => (
-                      <span key={tag} className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2 group-hover:text-[var(--color-primary)] transition-colors">
-                  {r.title}
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 leading-relaxed">
-                  {r.summary}
-                </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 italic border-l-3 border-[var(--color-primary)] pl-3">
-                  {r.rationale}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Trending Section */}
-        <section>
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-4">📈 Trending in Sustainability</h2>
-            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-extrabold mb-4 bg-gradient-to-r from-[#a3e635] via-[#facc15] to-[#16a34a] bg-clip-text text-transparent drop-shadow-lg inline-block animate-gradient-x">🌈 Trending in Sustainability</h2>
+            <p className="text-gray-700 dark:text-gray-200 max-w-2xl mx-auto">
               Stay updated with the latest environmental trends and impactful initiatives making waves globally
             </p>
           </div>
-
-          <div className="space-y-6">
-            {ecoTrends.map((t, index) => (
-              <div 
-                key={t.id}
-                className="group bg-white/80 dark:bg-slate-900/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/30 dark:border-slate-700 hover:shadow-xl transition-all duration-300 animate-fade-in-up"
-                style={{animationDelay: `${index * 200}ms`}}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-pink-500 rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-lg flex-shrink-0">
-                    🌍
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2 group-hover:text-[var(--color-primary)] transition-colors">
-                      {t.headline}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {ecoTrends.map((t, index) => {
+              const trendColors = [
+                'from-green-300 to-yellow-300',
+                'from-yellow-300 to-green-300',
+                'from-lime-300 to-yellow-200',
+              ];
+              const color = trendColors[index % trendColors.length];
+              return (
+                <div
+                  key={t.id}
+                  className={`relative group card border-l-8 border-green-300 dark:border-teal-300 hover:scale-[1.045] hover:shadow-2xl transition-all duration-300 fade-in-on-scroll`} 
+                  style={{ animationDelay: `${index * 200}ms` }}
+                >
+                  {/* Gradient bar */}
+                  <div className={`absolute left-0 top-0 h-full w-2 rounded-bl-3xl rounded-tl-3xl bg-gradient-to-b ${color}`}></div>
+                  <div className="flex flex-col gap-3 pl-6">
+                    <h3 className="text-2xl md:text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-green-600 dark:group-hover:text-teal-300 transition-colors bg-gradient-to-r from-[#a3e635] via-[#facc15] to-[#16a34a] bg-clip-text text-transparent animate-gradient-x">
+                      {t.impact}
                     </h3>
-                    <p className="text-gray-700 dark:text-gray-300 mb-3 leading-relaxed">
+                    <div className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                      {t.headline}
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-base md:text-lg mb-2">
                       {t.detail}
                     </p>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-[var(--color-primary)]">Impact:</span>
-                      <span className="text-sm text-gray-600 dark:text-gray-300 bg-green-50 dark:bg-emerald-900/30 px-3 py-1 rounded-full border border-green-200 dark:border-emerald-800/50">
-                        {t.impact}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <button className="w-10 h-10 bg-gray-100 hover:bg-[var(--color-primary)] hover:text-white rounded-full flex items-center justify-center transition-all duration-300 group">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </button>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
-
-        {/* Call to Action */}
-        <div className="mt-16 text-center">
-          <div className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] rounded-3xl p-8 text-white">
-            <h3 className="text-2xl font-bold mb-4">Ready to Make an Impact?</h3>
-            <p className="text-white/90 mb-6 max-w-2xl mx-auto">
-              Join thousands of eco-warriors making a difference. Track your progress, share your journey, and inspire others.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                to="/create-post"
-                className="bg-white text-[var(--color-primary)] px-8 py-3 rounded-full font-semibold hover:bg-white/90 transform hover:scale-105 transition-all duration-300 shadow-lg"
-              >
-                Share Your Story
-              </Link>
-              <Link
-                to="/dashboard"
-                className="bg-white/20 backdrop-blur-sm text-white border border-white/30 px-8 py-3 rounded-full font-semibold hover:bg-white/30 transform hover:scale-105 transition-all duration-300"
-              >
-                Track Progress
-              </Link>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
-  )
-}
-
-function AuthActions({ isDark = false }){
-  const { loggedIn, user } = useAuth()
-  if (!loggedIn) {
-    return (
-      <Link 
-        to="/signin" 
-        className={`flex items-center gap-2 px-3 py-2 rounded-full border transition-all duration-300 text-sm font-medium ${isDark ? 'border-gray-700 text-gray-300 hover:bg-gray-800 hover:border-gray-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300'}`}
-      >
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-        </svg>
-        Sign in
-      </Link>
-    )
-  }
-  return (
-    <Link 
-      to="/dashboard?edit=1" 
-      className="flex items-center group relative"
-      aria-label="Edit profile"
-    >
-      <div className="relative">
-        <img 
-          src={user.avatarUrl} 
-          alt="Profile" 
-          className="w-9 h-9 rounded-full object-cover ring-2 ring-white shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all duration-300" 
-        />
-        <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-white shadow-sm"></div>
-      </div>
-      <div className={`absolute -bottom-10 right-0 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap ${isDark ? 'bg-gray-700' : 'bg-gray-800'}`}>
-        Edit profile
-      </div>
-    </Link>
-  )
+  );
 }
 
 function NavLink({ to, label, primary = false, isDark = false }) {
   return (
     <Link
       to={to}
-      className={`px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+      className={`px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 relative group ${
         primary
           ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/10 hover:bg-[var(--color-primary)]/20'
           : isDark
@@ -352,7 +248,8 @@ function NavLink({ to, label, primary = false, isDark = false }) {
             : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
       }`}
     >
-      {label}
+      <span>{label}</span>
+      <span className="absolute left-1/2 -bottom-1 w-0 group-hover:w-4/5 h-0.5 bg-gradient-to-r from-[#a3e635] via-[#facc15] to-[#16a34a] rounded-full transition-all duration-300 -translate-x-1/2"></span>
     </Link>
   )
 }
