@@ -12,11 +12,11 @@ export default function Feed() {
   })
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white">
+      <div className="relative overflow-hidden bg-green-600 text-white">
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative container-lg mx-auto px-4 py-16">
+  <div className="relative container-lg py-16">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
               Community Feed
@@ -31,7 +31,7 @@ export default function Feed() {
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-24 -translate-x-24"></div>
       </div>
 
-  <div className="container-lg mx-auto px-4 py-8">
+  <div className="container-lg py-8">
         {/* Filter Tabs */}
     <div className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm rounded-2xl p-6 mb-8 shadow-lg border border-white/20 dark:border-slate-700">
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -46,7 +46,7 @@ export default function Feed() {
                   onClick={() => setActiveFilter(filter)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 ${
                     activeFilter === filter
-          ? 'bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white shadow-lg'
+          ? 'bg-green-600 text-white shadow-lg'
           : 'bg-white/50 dark:bg-slate-800/60 text-gray-700 dark:text-gray-200 hover:bg-white/80 dark:hover:bg-slate-700/70 border border-gray-200 dark:border-slate-700'
                   }`}
                 >
@@ -58,7 +58,7 @@ export default function Feed() {
         </div>
 
         {/* Posts Grid */}
-        <div className="grid gap-8 max-w-4xl mx-auto">
+  <div className="grid gap-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
           {filteredPosts.map((post, index) => (
             <div 
               key={post.id}
@@ -75,7 +75,7 @@ export default function Feed() {
         {/* Empty State */}
         {filteredPosts.length === 0 && (
           <div className="text-center py-16">
-            <div className="w-24 h-24 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] rounded-full mx-auto mb-6 flex items-center justify-center">
+            <div className="w-24 h-24 bg-green-600 rounded-full mx-auto mb-6 flex items-center justify-center">
               <svg className="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -89,7 +89,7 @@ export default function Feed() {
 
         {/* Call to Action */}
         <div className="mt-16 text-center">
-          <div className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] rounded-3xl p-8 text-white">
+          <div className="bg-green-600 rounded-3xl p-8 text-white">
             <h3 className="text-2xl font-bold mb-4">Share Your Eco Journey</h3>
             <p className="text-white/90 mb-6 max-w-2xl mx-auto">
               Inspire others with your sustainable living tips, zero-waste achievements, or environmental actions.

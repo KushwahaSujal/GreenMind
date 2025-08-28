@@ -96,7 +96,7 @@ export default function CreatePost() {
   const tagSuggestions = ['recycle', 'plasticfree', 'plantatree', 'greenenergy', 'compost', 'bikelife', 'upcycle']
 
   return (
-  <div className="container-lg mx-auto px-4">
+  <div className="container-lg py-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left: Composer */}
     <div className="card p-6">
@@ -131,7 +131,7 @@ export default function CreatePost() {
                   className="flex flex-col items-center justify-center gap-3 h-40 rounded-2xl border-2 border-dashed border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/60 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                 >
                   <input type="file" accept="image/*" onChange={handleFileSelect} className="hidden" />
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] text-white flex items-center justify-center shadow">
+                  <div className="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center shadow">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M16 7h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                   </div>
                   <div className="text-sm text-slate-700 dark:text-slate-200">Drag & drop an image here, or <span className="text-[var(--color-primary)] font-medium">browse</span></div>
@@ -248,7 +248,7 @@ export default function CreatePost() {
             {/* Actions */}
             <div className="flex items-center justify-between pt-2">
               <button type="button" onClick={() => navigate(-1)} className="px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800">Cancel</button>
-              <button type="submit" disabled={!canPost} className="px-6 py-2 rounded-xl text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] shadow disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transform hover:scale-[1.02] transition-all">Post</button>
+              <button type="submit" disabled={!canPost} className="px-6 py-2 rounded-xl text-white bg-green-600 shadow disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transform hover:scale-[1.02] transition-all">Post</button>
             </div>
           </form>
         </div>
@@ -256,7 +256,7 @@ export default function CreatePost() {
         {/* Right: Live Preview */}
         <div className="lg:sticky lg:top-24 self-start">
           <div className="card overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-100 dark:border-slate-800 bg-gradient-to-r from-[var(--color-primary)]/10 to-[var(--color-accent)]/10 dark:from-slate-900 dark:to-slate-900">
+            <div className="px-6 py-4 border-b border-gray-100 dark:border-slate-800 bg-green-100 dark:bg-gray-800">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="font-semibold leading-tight">Live Preview</h2>

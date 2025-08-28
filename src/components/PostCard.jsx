@@ -93,7 +93,7 @@ export default function PostCard({ post, variant }){
         {post.tags.map(tag => (
           <span 
             key={tag} 
-            className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-[var(--color-primary)]/10 to-[var(--color-accent)]/10 text-[var(--color-primary)] hover:from-[var(--color-primary)]/20 hover:to-[var(--color-accent)]/20 transition-all duration-300 cursor-pointer"
+            className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/30 transition-all duration-300 cursor-pointer"
           >
             #{tag}
           </span>
@@ -182,7 +182,7 @@ export default function PostCard({ post, variant }){
               <button 
                 type="submit"
                 disabled={!comment.trim()}
-                className="px-6 py-2 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white rounded-full font-medium hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105"
+                className="px-6 py-2 bg-green-600 text-white rounded-full font-medium hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105"
               >
                 Post
               </button>
@@ -193,7 +193,7 @@ export default function PostCard({ post, variant }){
           <div className="space-y-4">
             {post.comments.map(c => (
               <div key={c.id} className="flex gap-3 group">
-                <div className="w-8 h-8 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
+                <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
                   {c.author[0]}
                 </div>
                 <div className="flex-1">

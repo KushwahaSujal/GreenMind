@@ -21,6 +21,8 @@ export default function App(){
     } catch { return false }
   })
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
   useEffect(() => {
     try { localStorage.setItem('gm_theme', isDark ? 'dark' : 'light') } catch {}
     const root = document.documentElement
@@ -29,26 +31,29 @@ export default function App(){
     // Effects
     fadeInOnScroll();
     parallaxHero();
-    floatingParticles();
+  // floatingParticles(); // Disabled: remove moving bubbles
   }, [isDark])
 
   const toggleTheme = () => setIsDark(v => !v)
+  const toggleMobileMenu = () => setIsMobileMenuOpen(v => !v)
+  
   const headerTheme = isDark
-    ? 'bg-gradient-to-r from-[#1a2e05] to-[#365314] border-b-2 border-b-[#bef264]'
-    : 'bg-gradient-to-r from-[#faffed] to-[#fef9c3] border-b-2 border-b-[#a3e635]'
+    ? 'bg-gray-900/95 border-b border-gray-700/50'
+    : 'bg-white/95 border-b border-gray-200/50'
+    
   const searchInputClass = isDark
-    ? 'w-48 pl-10 pr-4 py-2 rounded-full border border-gray-700 bg-gray-800/50 text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)] focus:bg-gray-900 placeholder:text-gray-400'
-    : 'w-48 pl-10 pr-4 py-2 rounded-full border border-gray-200 bg-gray-50/50 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)] focus:bg-white transition-all duration-300 placeholder:text-gray-400'
+    ? 'w-full md:w-48 pl-10 pr-4 py-2.5 rounded-xl border border-gray-600 bg-gray-800 text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500/40 focus:border-green-500 placeholder:text-gray-400 transition-all duration-300'
+    : 'w-full md:w-48 pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 transition-all duration-300 placeholder:text-gray-400'
 
   return (
     <div className="min-h-screen">
-      <header className={`sticky top-0 z-40 ${headerTheme} backdrop-blur-lg border-b shadow-sm`}>
-        <div className="container-lg mx-auto px-4">
+      <header className={`sticky top-0 z-40 ${headerTheme} backdrop-blur-lg shadow-sm`}>
+        <div className="container-lg">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to="/" aria-label="GreenMind Home" className="flex items-center gap-3 group">
               <div className="relative">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] shadow-lg flex items-center justify-center transition-all duration-300 group-hover:shadow-xl group-hover:scale-105">
+                <div className="w-10 h-10 rounded-xl bg-green-600 shadow-lg flex items-center justify-center transition-all duration-300 group-hover:shadow-xl group-hover:scale-105">
                   <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     {/* Leaf outline (nature) */}
                     <path d="M12 3c-4.2 2.1-6.5 5.8-6.5 9.2 0 3.6 2.6 6.9 6.5 8.9 3.9-2 6.5-5.3 6.5-8.9 0-3.4-2.2-7.1-6.5-9.2z" />
@@ -69,7 +74,7 @@ export default function App(){
                 <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-white/30"></span>
               </div>
               <div className="leading-tight">
-                <span className="text-[20px] md:text-[22px] font-extrabold bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] bg-clip-text text-transparent tracking-tight">
+                <span className="text-[20px] md:text-[22px] font-extrabold text-green-600 tracking-tight">
                   GreenMind
                 </span>
                 <span className="hidden md:block text-[10px] text-gray-500 tracking-widest uppercase">Grow • Act • Inspire</span>
@@ -117,7 +122,7 @@ export default function App(){
               {/* Create Account Button (smaller) */}
               <Link 
                 to="/signup"
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white text-xs font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-600 text-white text-xs font-semibold hover:bg-green-700 hover:shadow-lg hover:scale-105 transition-all duration-300"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -134,7 +139,7 @@ export default function App(){
         </div>
       </header>
 
-      <main className="container-lg mx-auto px-4 py-8">
+  <main className="container-lg py-8">
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/feed" element={<Feed/>} />
@@ -157,72 +162,124 @@ export default function App(){
 function Home() {
   const { user } = useAuth();
   return (
-  <div className="min-h-screen bg-gradient-to-br from-[#faffed] via-[#fef9c3] to-[#a3e635] dark:from-[#1a2e05] dark:via-[#365314] dark:to-[#bef264] -mx-4 -my-8 fade-in-on-scroll">
+  <div className="min-h-screen bg-white dark:bg-gray-900 fade-in-on-scroll">
       {/* Hero Section */}
       <div className="hero-bg fade-in-on-scroll">
-        <div className="relative z-10 w-full flex flex-col items-center justify-center py-20">
-          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 mb-6 animate-fade-in">
-            <svg className="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2C7 7 2 12 12 22C22 12 17 7 12 2Z" stroke="#4CAF50" strokeWidth="2" fill="#e8f5e9"/></svg>
-            <span className="text-sm font-medium text-green-700">Welcome back!</span>
+        <div className="relative z-10 w-full flex flex-col items-center justify-center py-12 md:py-20 px-4">
+          <div className="inline-flex items-center gap-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full px-4 py-2 mb-6 animate-fade-in shadow-lg">
+            <svg className="w-5 h-5 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 2C7 7 2 12 12 22C22 12 17 7 12 2Z" stroke="currentColor" strokeWidth="2" fill="currentColor" fillOpacity="0.1"/>
+            </svg>
+            <span className="text-sm font-medium text-green-700 dark:text-green-400">Welcome back!</span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-green-800 font-sans">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 text-gray-900 dark:text-white font-sans text-center leading-tight">
             Hello, {user?.name?.split(' ')[0] || 'User'} 👋
           </h1>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8 font-sans">
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8 font-sans text-center px-4">
             Your personalized dashboard for sustainable living, AI-powered recommendations, and the latest eco trends to help you make a positive impact.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up px-4 w-full sm:w-auto">
             <Link
               to="/dashboard"
-              className="btn-primary"
+              className="w-full sm:w-auto btn-primary flex items-center justify-center gap-3 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
             >
-              <svg className="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" stroke="#4CAF50" strokeWidth="2" fill="#e8f5e9"/><path d="M8 12l2 2 4-4" stroke="#388E3C" strokeWidth="2"/></svg>
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M8 12l2 2 4-4"/>
+              </svg>
               View Dashboard
             </Link>
             <Link
               to="/feed"
-              className="btn-primary"
-              style={{ background: 'linear-gradient(90deg, #8D6E63 60%, #F5F5DC 100%)', color: '#222' }}
+              className="w-full sm:w-auto bg-gray-600 hover:bg-gray-700 text-white flex items-center justify-center gap-3 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
             >
-              <svg className="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="7" width="18" height="13" rx="2" fill="#F5F5DC" stroke="#8D6E63" strokeWidth="2"/><path d="M8 10h8M8 14h5" stroke="#8D6E63" strokeWidth="2"/></svg>
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="7" width="18" height="13" rx="2"/>
+                <path d="M8 10h8M8 14h5"/>
+              </svg>
               Explore Feed
             </Link>
           </div>
         </div>
       </div>
-      <div className="container-lg mx-auto px-4 py-12">
+      
+  <div className="container-lg py-8 md:py-12">
+        {/* AI Recommendations Section */}
+        <section className="mb-12 md:mb-16 fade-in-on-scroll">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-blue-600 dark:text-blue-400 drop-shadow-lg">
+              🤖 AI Recommendations for You
+            </h2>
+            <p className="text-lg md:text-xl text-gray-700 dark:text-gray-200 max-w-3xl mx-auto leading-relaxed px-4">
+              Personalized, actionable tips powered by AI to help you live more sustainably every day
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
+            {aiRecommendations.map((rec, idx) => (
+              <div
+                key={rec.id}
+                className="relative group card border-l-8 border-blue-300 dark:border-blue-500 hover:scale-[1.02] md:hover:scale-[1.045] hover:shadow-2xl transition-all duration-300 fade-in-on-scroll bg-white dark:bg-gray-900/80 backdrop-blur-sm"
+                style={{ animationDelay: `${idx * 180}ms` }}
+              >
+                {/* Indicator bar */}
+                <div className="absolute left-0 top-0 h-full w-2 rounded-bl-3xl rounded-tl-3xl bg-blue-500 dark:bg-blue-400"></div>
+                <div className="flex flex-col gap-3 pl-6 pr-4 py-4 md:py-6">
+                  <h3 className="text-xl md:text-2xl font-bold text-blue-700 dark:text-blue-300 mb-2 group-hover:text-green-600 dark:group-hover:text-green-300 transition-colors leading-tight">
+                    {rec.title}
+                  </h3>
+                  <div className="text-base md:text-lg font-medium text-gray-700 dark:text-gray-200 mb-2 leading-relaxed">
+                    {rec.summary}
+                  </div>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm md:text-base mb-3 italic leading-relaxed">
+                    {rec.rationale}
+                  </p>
+                  <div className="flex flex-wrap gap-2 mt-auto">
+                    {rec.tags.map(tag => (
+                      <span key={tag} className="px-3 py-1 rounded-full text-xs md:text-sm font-semibold bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 shadow-sm">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Trending in Sustainability Section */}
-  <section className="mb-12 fade-in-on-scroll">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-4 bg-gradient-to-r from-[#a3e635] via-[#facc15] to-[#16a34a] bg-clip-text text-transparent drop-shadow-lg inline-block animate-gradient-x">🌈 Trending in Sustainability</h2>
-            <p className="text-gray-700 dark:text-gray-200 max-w-2xl mx-auto">
+        <section className="mb-12 md:mb-16 fade-in-on-scroll">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-green-600 dark:text-green-400 drop-shadow-lg">
+              🌈 Trending in Sustainability
+            </h2>
+            <p className="text-lg md:text-xl text-gray-700 dark:text-gray-200 max-w-3xl mx-auto leading-relaxed px-4">
               Stay updated with the latest environmental trends and impactful initiatives making waves globally
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
             {ecoTrends.map((t, index) => {
               const trendColors = [
-                'from-green-300 to-yellow-300',
-                'from-yellow-300 to-green-300',
-                'from-lime-300 to-yellow-200',
+                'bg-green-500',
+                'bg-yellow-500',
+                'bg-lime-500',
               ];
               const color = trendColors[index % trendColors.length];
               return (
                 <div
                   key={t.id}
-                  className={`relative group card border-l-8 border-green-300 dark:border-teal-300 hover:scale-[1.045] hover:shadow-2xl transition-all duration-300 fade-in-on-scroll`} 
+                  className="relative group card border-l-8 border-green-300 dark:border-teal-300 hover:scale-[1.02] md:hover:scale-[1.045] hover:shadow-2xl transition-all duration-300 fade-in-on-scroll" 
                   style={{ animationDelay: `${index * 200}ms` }}
                 >
-                  {/* Gradient bar */}
-                  <div className={`absolute left-0 top-0 h-full w-2 rounded-bl-3xl rounded-tl-3xl bg-gradient-to-b ${color}`}></div>
-                  <div className="flex flex-col gap-3 pl-6">
-                    <h3 className="text-2xl md:text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-green-600 dark:group-hover:text-teal-300 transition-colors bg-gradient-to-r from-[#a3e635] via-[#facc15] to-[#16a34a] bg-clip-text text-transparent animate-gradient-x">
+                  {/* Indicator bar */}
+                  <div className={`absolute left-0 top-0 h-full w-2 rounded-bl-3xl rounded-tl-3xl ${color}`}></div>
+                  <div className="flex flex-col gap-3 pl-6 pr-4 py-4 md:py-6">
+                    <h3 className="text-2xl md:text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-2 group-hover:text-green-600 dark:group-hover:text-green-300 transition-colors leading-tight">
                       {t.impact}
                     </h3>
-                    <div className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                    <div className="text-lg md:text-xl font-semibold text-gray-700 dark:text-gray-200 mb-3 leading-relaxed">
                       {t.headline}
                     </div>
-                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-base md:text-lg mb-2">
+                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-base md:text-lg">
                       {t.detail}
                     </p>
                   </div>
@@ -249,7 +306,7 @@ function NavLink({ to, label, primary = false, isDark = false }) {
       }`}
     >
       <span>{label}</span>
-      <span className="absolute left-1/2 -bottom-1 w-0 group-hover:w-4/5 h-0.5 bg-gradient-to-r from-[#a3e635] via-[#facc15] to-[#16a34a] rounded-full transition-all duration-300 -translate-x-1/2"></span>
+      <span className="absolute left-1/2 -bottom-1 w-0 group-hover:w-4/5 h-0.5 bg-green-500 rounded-full transition-all duration-300 -translate-x-1/2"></span>
     </Link>
   )
 }

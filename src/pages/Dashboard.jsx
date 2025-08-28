@@ -36,7 +36,7 @@ export default function Dashboard(){
   return (
     <div className="space-y-6 pb-8">
       {/* Profile Header */}
-      <div className="card bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] text-white">
+      <div className="card bg-green-600 text-white">
         <div className="flex flex-col md:flex-row items-center gap-6">
           <div className="relative">
             <img 
@@ -220,7 +220,7 @@ export default function Dashboard(){
           ].map((stat, i) => (
     <div key={i} className="card bg-white dark:bg-slate-900 hover:shadow-lg transition-all duration-300 hover:scale-105">
               <div className="flex items-center gap-5 p-6">
-                <div className="p-4 rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary)]/80 flex items-center justify-center w-16 h-16">
+                <div className="p-4 rounded-2xl bg-green-600 flex items-center justify-center w-16 h-16">
                   <div className="text-white">
                     {stat.icon}
                   </div>
